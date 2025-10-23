@@ -86,7 +86,7 @@ module RedmineSlaOla
           next
         end
 
-        usable_minutes_today = [(day_end - current) / 60.0, minutes_left].min.floor
+        usable_minutes_today = [(day_end - current) / 60.0, minutes_left].min.ceil
         current += usable_minutes_today.minutes
         minutes_left -= usable_minutes_today
 
