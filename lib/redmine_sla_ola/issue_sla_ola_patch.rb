@@ -2,7 +2,7 @@ module RedmineSlaOla
   module IssueSlaOlaPatch
     def self.included(base)
       base.class_eval do
-        before_validation :set_sla_and_ola_limits_on_create, on: :create
+        after_commit :set_sla_and_ola_limits_on_create, on: :create
       end
     end
 
@@ -37,6 +37,14 @@ module RedmineSlaOla
           policy.business_hours_start&.strftime("%H:%M"),
           policy.business_hours_end&.strftime("%H:%M"),
           policy.business_days
+        )
+      end
+
+      if self.sla_limit || self.ola_limit
+        update_columns(
+          sla_limit: self.sla_limit,
+          ola_limit: self.ola_limit,
+          updated_on: Time.zone.now
         )
       end
 
