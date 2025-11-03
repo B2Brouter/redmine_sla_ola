@@ -41,7 +41,7 @@ module RedmineSlaOla
       end
 
       if self.sla_limit || self.ola_limit
-        update_columns(
+        self.update_columns(
           sla_limit: self.sla_limit,
           ola_limit: self.ola_limit,
           updated_on: Time.zone.now
