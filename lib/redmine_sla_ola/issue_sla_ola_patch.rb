@@ -2,15 +2,16 @@ module RedmineSlaOla
   module IssueSlaOlaPatch
     def self.included(base)
       base.class_eval do
-        after_commit :set_sla_and_ola_limits_on_create, on: :create
+        after_commit :set_sla_and_ola_limits
       end
     end
 
     private
 
-    def set_sla_and_ola_limits_on_create
+    def set_sla_and_ola_limits
       return true unless project_id.present?
-      return true unless self.sla_limit.blank? || self.ola_limit.blank?
+      return true unless self.sla_limit.blank? && self.ola_limit.blank?
+      return true unless self.created_on.present?
 
       product_value = custom_value_for_products
       return true if product_value.blank?
